@@ -19,16 +19,13 @@ vim.opt.swapfile = false
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 
--- highlight the line number of the cursor
-vim.opt.cursorline = true
-vim.opt.cursorlineopt = "number"
+
+
 
 vim.opt.updatetime = 250
 vim.opt.timeoutlen = 300
 
--- disable cursor-styling
-vim.opt.guicursor = ""
+
 
 vim.opt.termguicolors = true
 
-vim.opt.cmdheight = 0
