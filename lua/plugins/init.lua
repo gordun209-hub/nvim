@@ -1,7 +1,10 @@
 return {
   "nvim-lua/plenary.nvim",
   -- Devicons
-  "kyazdani42/nvim-web-devicons",
+  {
+    "kyazdani42/nvim-web-devicons",
+    event = "VeryLazy",
+  },
 
   {
     'catppuccin/nvim',
