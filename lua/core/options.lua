@@ -28,4 +28,3 @@ vim.opt.timeoutlen = 300
 
 
 vim.opt.termguicolors = true
-

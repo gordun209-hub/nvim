@@ -5,7 +5,6 @@ return { {
     { 'hrsh7th/cmp-nvim-lsp' },
 
 
-
   },
   config = function()
     local cmp_lsp = require('cmp_nvim_lsp')
@@ -45,9 +44,6 @@ return { {
       capabilities = capabilities,
     }
 
-    lspconfig.cssls.setup {
-      capabilities = capabilities,
-    }
 
     lspconfig.tsserver.setup {
       filetypes = {
@@ -61,9 +57,6 @@ return { {
       capabilities = capabilities
     }
 
-    lspconfig.phpactor.setup {
-      capabilities = capabilities
-    }
 
     lspconfig.clangd.setup {
       capabilities = capabilities
