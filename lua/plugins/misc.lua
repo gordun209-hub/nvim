@@ -1,5 +1,28 @@
 return {
   {
+    "stevearc/dressing.nvim",
+    event = "VeryLazy",
+    opts = {
+      input = {
+        enabled = true,
+        default_prompt = "➤ ",
+        win_options = {
+          winblend = 0,
+        },
+      },
+      select = {
+        enabled = true,
+        backend = { "telescope", "builtin" },
+        builtin = {
+          win_options = {
+            winblend = 0,
+          },
+        },
+      },
+    },
+  },
+
+  {
     'folke/which-key.nvim',
     config = function()
       vim.o.timeout = true
@@ -109,6 +132,20 @@ return {
     end
 
   },
-  'christoomey/vim-tmux-navigator'
+  {
+    'christoomey/vim-tmux-navigator',
+    event = "VeryLazy"
+  },
+  { "b0o/schemastore.nvim", lazy = true },
+
+  {
+    "numToStr/Comment.nvim",
+    event = { "BufReadPost", "BufNewFile" },
+    config = function()
+      local comment = require "Comment"
+
+      comment.setup {}
+    end,
+  }
 
 }
