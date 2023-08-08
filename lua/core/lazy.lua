@@ -18,8 +18,8 @@ if not ok then
 end
 
 -- We have to set the leader key here for lazy.nvim to work
-require("helpers.keys").set_leader(" ")
-
+vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
 -- Load plugins from specifications
 -- (The leader key must be set before this)
 lazy.setup("plugins")
