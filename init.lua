@@ -10,14 +10,12 @@ require("paq")({
             vim.cmd([[:TSUpdateSync]])
         end,
     },
-    { 'VonHeikemen/lsp-zero.nvim',
-    },
-
+    { 'VonHeikemen/lsp-zero.nvim',        branch = 'dev-v3' },
     -- LSP Support
     { 'neovim/nvim-lspconfig' },
     { 'williamboman/mason.nvim' },
     { 'williamboman/mason-lspconfig.nvim' },
-
+    { 'folke/neodev.nvim' },
     -- Autocompletion
     { 'hrsh7th/nvim-cmp' },
     { 'hrsh7th/cmp-buffer' },
@@ -31,6 +29,10 @@ require("paq")({
     { 'rafamadriz/friendly-snippets' },
 
     { 'nvim-telescope/telescope.nvim',    tag = '0.1.0' },
+    { 'onsails/lspkind.nvim' },
+
+    -- Tmux
+    { 'alexghergh/nvim-tmux-navigation' },
 })
 require("core.options")
 require("core.maps")

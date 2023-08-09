@@ -32,5 +32,9 @@
         "/home/ali/.local/share/nvim/site/pack/paqs/start/telescope.nvim/lua",
         "/home/ali/dots/nvim/lua",
         "${3rd}/luv/library"
-    ]
+    ],
+    "diagnostics.disable": [
+        "missing-fields"
+    ],
+    "workspace.checkThirdParty": false
 }
