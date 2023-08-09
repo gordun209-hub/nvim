@@ -43,11 +43,9 @@ lsp.on_attach(function(_, bufnr)
         vim.lsp.buf.format { async = true }
     end, opts)
 end)
-
 lsp.extend_cmp()
 local cmp = require('cmp')
 local cmp_action = require('lsp-zero').cmp_action()
-
 cmp.setup({
     formatting = {
         fields = { 'abbr', 'kind', 'menu' },
