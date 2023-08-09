@@ -1,0 +1,36 @@
+{
+    "diagnostics.globals": [
+        "vim"
+    ],
+    "workspace.library": [
+        "/home/ali/.local/share/nvim/site/pack/paqs/start/neodev.nvim/types/nightly",
+        "/usr/local/share/nvim/runtime/lua",
+        "/home/ali/.local/share/nvim/site/pack/paqs/start/LuaSnip/lua",
+        "/home/ali/.local/share/nvim/site/pack/paqs/start/catppuccin/lua",
+        "/home/ali/.local/share/nvim/site/pack/paqs/start/cmp-buffer/lua",
+        "/home/ali/.local/share/nvim/site/pack/paqs/start/cmp-cmdline/lua",
+        "/home/ali/.local/share/nvim/site/pack/paqs/start/cmp-nvim-lsp/lua",
+        "/home/ali/.local/share/nvim/site/pack/paqs/start/cmp-path/lua",
+        "/home/ali/.local/share/nvim/site/pack/paqs/start/cmp_luasnip/lua",
+        "/home/ali/.local/share/nvim/site/pack/paqs/start/lsp-format.nvim/lua",
+        "/home/ali/.local/share/nvim/site/pack/paqs/start/lspkind-nvim/lua",
+        "/home/ali/.local/share/nvim/site/pack/paqs/start/neodev.nvim/lua",
+        "/home/ali/.local/share/nvim/site/pack/paqs/start/nui.nvim/lua",
+        "/home/ali/.local/share/nvim/site/pack/paqs/start/null-ls.nvim/lua",
+        "/home/ali/.local/share/nvim/site/pack/paqs/start/nvim-cmp/lua",
+        "/home/ali/.local/share/nvim/site/pack/paqs/start/nvim-lspconfig/lua",
+        "/home/ali/.local/share/nvim/site/pack/paqs/start/nvim-navbuddy/lua",
+        "/home/ali/.local/share/nvim/site/pack/paqs/start/nvim-navic/lua",
+        "/home/ali/.local/share/nvim/site/pack/paqs/start/nvim-treesitter/lua",
+        "/home/ali/.local/share/nvim/site/pack/paqs/start/nvim-web-devicons/lua",
+        "/home/ali/.local/share/nvim/site/pack/paqs/start/paq-nvim/lua",
+        "/home/ali/.local/share/nvim/site/pack/paqs/start/plenary.nvim/lua",
+        "/home/ali/.local/share/nvim/site/pack/paqs/start/refactoring.nvim/lua",
+        "/home/ali/.local/share/nvim/site/pack/paqs/start/sqlite.lua/lua",
+        "/home/ali/.local/share/nvim/site/pack/paqs/start/telescope-file-browser.nvim/lua",
+        "/home/ali/.local/share/nvim/site/pack/paqs/start/telescope-fzf-native.nvim/lua",
+        "/home/ali/.local/share/nvim/site/pack/paqs/start/telescope.nvim/lua",
+        "/home/ali/dots/nvim/lua",
+        "${3rd}/luv/library"
+    ]
+}
