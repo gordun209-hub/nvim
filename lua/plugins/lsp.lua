@@ -1,20 +1,39 @@
-return {
+return { {
   -- LSP Configuration & Plugins
   'neovim/nvim-lspconfig',
   dependencies = {
     -- Automatically install LSPs to stdpath for neovim
     { 'williamboman/mason.nvim', config = true },
     'williamboman/mason-lspconfig.nvim',
+    "hrsh7th/cmp-nvim-lsp",
 
     -- Useful status updates for LSP
-    -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-    { 'j-hui/fidget.nvim',       tag = 'legacy', opts = {} },
 
     -- Additional lua configuration, makes nvim stuff amazing!
     'folke/neodev.nvim',
   },
   config = function()
-    local on_attach = function(_, bufnr)
+    local lspconfig = require('lspconfig')
+    vim.diagnostic.config({
+      virtual_text = false,
+      virtual_lines = false, -- lsp_lines
+      update_in_insert = true,
+      underline = true,
+      severity_sort = true,
+
+      float = {
+        focusable = false,
+        style = 'minimal',
+        border = 'rounded',
+        header = '',
+        prefix = '',
+      },
+    })
+
+    vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded' })
+    vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded' })
+    local on_attach = function(client, bufnr)
+      client.server_capabilities.semanticTokensProvider = nil
       vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { silent = true, desc = 'Show diagnostics' })
       vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { silent = true, desc = 'Show previous diagnostics' })
       vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { silent = true, desc = 'Show next diagnostics' })
@@ -30,57 +49,74 @@ return {
       vim.keymap.set('n', 'gr', vim.lsp.buf.references, { silent = true, desc = 'Show references' })
       vim.keymap.set('n', '<leader>fa', function() vim.lsp.buf.format({ async = true }) end,
         { silent = true, desc = 'Format buffer' })
-      vim.keymap.set('n', '<leader>u', require('nvim-navbuddy').open, { silent = true, desc = 'Open navbuddy' })
     end
-    -- Create a command `:Format` local to the LSP buffer
 
-    -- Enable the following language servers
-    --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
-    --
-    --  Add any additional override configuration in the following tables. They will be passed to
-    --  the `settings` field of the server config. You must look up that documentation yourself.
-    --
-    --  If you want to override the default filetypes that your language server will attach to you can
-    --  define the property 'filetypes' to the map in question.
-    local servers = {
-      -- clangd = {},
-      -- gopls = {},
-      -- pyright = {},
-      -- rust_analyzer = {},
-      -- tsserver = {},
-      -- html = { filetypes = { 'html', 'twig', 'hbs'} },
-
-      lua_ls = {
-        Lua = {
-          workspace = { checkThirdParty = false },
-          telemetry = { enable = false },
-        },
-      },
-    }
-
-    -- Setup neovim lua configuration
-    require('neodev').setup()
-
-    -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+    require('neodev').setup()
+    lspconfig['lua_ls'].setup({
+      capabilities = capabilities,
+      on_attach = on_attach,
 
-    -- Ensure the servers above are installed
-    local mason_lspconfig = require 'mason-lspconfig'
+      settings = {
+        Lua = {
+          completion = {
+            callSnippet = 'Replace',
+          },
 
-    mason_lspconfig.setup {
-      ensure_installed = vim.tbl_keys(servers),
-    }
+          diagnostics = {
+            globals = { 'vim' },
+          },
 
-    mason_lspconfig.setup_handlers {
-      function(server_name)
-        require('lspconfig')[server_name].setup {
-          capabilities = capabilities,
-          on_attach = on_attach,
-          settings = servers[server_name],
-          filetypes = (servers[server_name] or {}).filetypes,
-        }
-      end
-    }
+          workspace = {
+            library = vim.api.nvim_get_runtime_file('', true),
+            checkThirdParty = false,
+          },
+
+          runtime = { version = 'LuaJIT' },
+        },
+      },
+    })
   end
+
+},
+  {
+    "ray-x/go.nvim",
+    dependencies = {
+      "ray-x/guihua.lua",
+      "neovim/nvim-lspconfig",
+    },
+    config = function()
+      require("go").setup {
+        goimport = "gopls",
+        lsp_cfg = {
+          settings = {
+            gopls = {},
+          }
+        },
+        lsp_codelens = false,
+        lsp_inlay_hints = {
+          enable = false,
+        },
+        lsp_keymaps = function(bufnr)
+          local function buf_set_keymap(...)
+            vim.api.nvim_buf_set_keymap(bufnr, ...)
+          end
+          local opts = { noremap = true, silent = true }
+
+          buf_set_keymap("n", "gd", "<Cmd>lua vim.lsp.buf.definition()<CR>", opts)
+          buf_set_keymap("n", "K", "<Cmd>lua vim.lsp.buf.hover()<CR>", opts)
+          buf_set_keymap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
+          buf_set_keymap("n", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
+          buf_set_keymap("n", "gD", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
+          buf_set_keymap("n", "<leader>rn", "<cmd>lua require('go.rename').lsprename()<CR>", opts)
+        end,
+        dap_debug = false,
+      }
+    end,
+    ft = { "go", "gomod" },
+    event = { "CmdlineEnter" },
+    enabled = false,
+    build = ':lua require("go.install").update_all_sync()',
+  }
 }
