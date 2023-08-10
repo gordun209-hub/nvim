@@ -120,5 +120,13 @@ return { {
     event = { "CmdlineEnter" },
     enabled = false,
     build = ':lua require("go.install").update_all_sync()',
+  },
+  {
+    "williamboman/mason.nvim",
+    config = function()
+      local mason = require("mason")
+
+      mason.setup()
+    end,
   }
 }

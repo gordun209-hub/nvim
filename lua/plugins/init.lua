@@ -1,6 +1,7 @@
 return { {
   "nvim-tree/nvim-web-devicons",
   opts = {},
+  lazy = true
 },
   { "nvim-lua/plenary.nvim" },
   {
@@ -23,6 +24,20 @@ return { {
         },
       },
     },
+  },
+
+  {
+    'mbbill/undotree',
+    cmd = 'UndotreeToggle',
+    keys = {
+      { '<Leader>gu', '<cmd>UndotreeToggle<CR>', desc = 'Undo Tree' },
+    },
+  },
+
+  {
+    'saecki/crates.nvim',
+    event = { 'BufRead Cargo.toml' },
+    opts = {},
   },
   {
     "nvim-lualine/lualine.nvim",
