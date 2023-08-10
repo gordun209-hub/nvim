@@ -9,17 +9,13 @@ return {
         require("luasnip.loaders.from_vscode").lazy_load()
       end,
     },
-    opts = {
-      history = true,
-      delete_check_events = "TextChanged",
-    },
   },
   -- auto completion
   {
     { -- https://github.com/hrsh7th/nvim-cmp -- 自动补全
       "hrsh7th/nvim-cmp",
       event = { "BufReadPost", "BufNewFile" },
-      dependencies = {   -- cmp 源
+      dependencies = { -- cmp 源
         "hrsh7th/cmp-path",
         "hrsh7th/cmp-nvim-lsp",
         "hrsh7th/cmp-buffer",
@@ -48,7 +44,7 @@ return {
         cmp.setup({
           snippet = {
             expand = function(args)
-              require("luasnip").lsp_expand(args.body)           -- For 'luasnip' user
+              require("luasnip").lsp_expand(args.body) -- For 'luasnip' user
             end,
           },
           mapping = cmp.mapping.preset.insert({
@@ -87,7 +83,7 @@ return {
           formatting = {
             fields = { 'menu', 'abbr', 'kind' },
             format = require('lspkind').cmp_format({
-              mode = 'symbol_text',           -- show only symbol annotations
+              mode = 'symbol_text', -- show only symbol annotations
               maxwidth = 60,
               before = function(entry, vim_item)
                 local menu_icon = {

@@ -16,4 +16,6 @@ vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup("plugins", {})
 require("core.options")
+
+
 require("core.autocmds")
