@@ -16,116 +16,111 @@ return {
   },
   -- auto completion
   {
-    "hrsh7th/nvim-cmp",
-    version = false,
-    dependencies = {
-      "hrsh7th/cmp-buffer",
-      "hrsh7th/cmp-path",
-      "hrsh7th/cmp-cmdline",
-      "hrsh7th/cmp-nvim-lua",
-      "saadparwaiz1/cmp_luasnip",
-      "onsails/lspkind.nvim",
-    },
-    opts = function()
-      local cmp = require("cmp")
-      local luasnip = require("luasnip")
-
-      local has_words_before = function()
-        local unpack = unpack or table.unpack
-        local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-        return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
-      end
-
-      return {
-        completion = {
-          completeopt = "menu, menuone,noinsert",
+    { -- https://github.com/hrsh7th/nvim-cmp -- 自动补全
+      "hrsh7th/nvim-cmp",
+      event = { "BufReadPost", "BufNewFile" },
+      dependencies = {   -- cmp 源
+        "hrsh7th/cmp-path",
+        "hrsh7th/cmp-nvim-lsp",
+        "hrsh7th/cmp-buffer",
+        "hrsh7th/cmp-cmdline",
+        {
+          "saadparwaiz1/cmp_luasnip",
+          dependencies = {
+            "L3MON4D3/LuaSnip",
+            dependencies = {
+              "rafamadriz/friendly-snippets",
+              "onsails/lspkind-nvim",
+            }
+          }
         },
-        snippet = {
-          expand = function(args)
-            require("luasnip").lsp_expand(args.body)
-          end,
-        },
-        -- Key mapping
-        mapping = cmp.mapping.preset.insert({
-          ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-          ["<C-f>"] = cmp.mapping.scroll_docs(4),
-          ["<C-Space>"] = cmp.mapping.complete(),
-          ["<C-e>"] = cmp.mapping.abort(),
-          ["<CR>"] = cmp.mapping.confirm({ select = true }), -- accept currently selected item. set `select` to `false` to only confirm explicitly selected items.
-          ["<Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-              cmp.select_next_item()
-            elseif luasnip.expand_or_locally_jumpable() then
-              luasnip.expand_or_jump()
-            elseif has_words_before() then
-              cmp.complete()
-            else
-              fallback()
-            end
-          end, { "i", "s" }),
-          ["<S-Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-              cmp.select_prev_item()
-            elseif luasnip.jumpable(-1) then
-              luasnip.jump(-1)
-            else
-              fallback()
-            end
-          end, { "i", "s" }),
-        }),
+      },
+      config = function()
+        local has_words_before = function()
+          unpack = unpack or table.unpack
+          local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+          return col ~= 0 and
+              vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+        end
+        require("luasnip.loaders.from_vscode").lazy_load()
+        local luasnip = require("luasnip")
+        local cmp = require("cmp")
+        cmp.setup({
+          snippet = {
+            expand = function(args)
+              require("luasnip").lsp_expand(args.body)           -- For 'luasnip' user
+            end,
+          },
+          mapping = cmp.mapping.preset.insert({
+            ["<Tab>"] = cmp.mapping(function(fallback)
+              if cmp.visible() then
+                cmp.select_next_item()
+                -- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable()
+                -- they way you will only jump inside the snippet region
+              elseif luasnip.expand_or_jumpable() then
+                luasnip.expand_or_jump()
+              elseif has_words_before() then
+                cmp.complete()
+              else
+                fallback()
+              end
+            end, { "i", "s" }),
 
-        -- Snippets sources
-        sources = cmp.config.sources({
-          { name = "nvim_lsp" },
-          { name = "luasnip" },
-          { name = "nvim_lua" },
-          { name = "buffer" },
-          { name = "path" },
-          { name = "cmdline" },
-        }),
+            ["<S-Tab>"] = cmp.mapping(function(fallback)
+              if cmp.visible() then
+                cmp.select_prev_item()
+              elseif luasnip.jumpable(-1) then
+                luasnip.jump(-1)
+              else
+                fallback()
+              end
+            end, { "i", "s" }),
 
-        -- window = {
-        -- 	--completion = cmp.config.window.bordered(),
-        -- 	--documentation = cmp.config.window.bordered(),
-        -- },
-
-        -- Show devicons as kind
-        formatting = {
-          format = require("lspkind").cmp_format({
-            mode = "symbol_text",
-            maxwidth = 100,
-            ellipsis_char = "...",
-            menu = {
-              buffer = "[Buffer]",
-              nvim_lsp = "[LSP]",
-              luasnip = "[LuaSnip]",
-              nvim_lua = "[Lua]",
-            },
+            ['<CR>'] = cmp.mapping.confirm({ select = true }),
           }),
-        },
-        view = {
-          entries = { name = "custom", selection_order = "near_cursor" },
-        },
-        -- autocompletion pairs
-        cmp.event:on("confirm_done", require("nvim-autopairs.completion.cmp").on_confirm_done()),
+          sources = cmp.config.sources {
+            { name = 'nvim_lsp' },
+            { name = 'path' },
+            { name = 'luasnip' },
+            { name = 'buffer' },
+          },
+          formatting = {
+            fields = { 'menu', 'abbr', 'kind' },
+            format = require('lspkind').cmp_format({
+              mode = 'symbol_text',           -- show only symbol annotations
+              maxwidth = 60,
+              before = function(entry, vim_item)
+                local menu_icon = {
+                  nvim_lsp = 'λ ',
+                  luasnip = '⋗ ',
+                  buffer = 'Ω ',
+                  path = '🖫 ',
+                }
+                vim_item.menu = menu_icon[entry.source.name]
+                return vim_item
+              end,
+            })
+          },
+          experimental = {
+            ghost_text = true,
+          },
 
-        cmp.setup.cmdline({ "/", "?" }, {
+        })
+        require("cmp").setup.cmdline('/', {
           mapping = cmp.mapping.preset.cmdline(),
           sources = {
-            { name = "buffer" },
-          },
-        }),
-
-        cmp.setup.cmdline(":", {
+            { name = 'buffer' },
+          }
+        })
+        cmp.setup.cmdline(':', {
           mapping = cmp.mapping.preset.cmdline(),
           sources = cmp.config.sources({
-            { name = "path" },
-          }, {
-            { name = "cmdline" },
-          }),
-        }),
-      }
-    end,
+            { name = 'path' },
+            { name = 'cmdline' }
+          })
+        })
+      end,
+    }
   },
   {
     "windwp/nvim-autopairs",
