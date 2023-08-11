@@ -4,27 +4,6 @@ return { {
   lazy = true
 },
   { "nvim-lua/plenary.nvim" },
-  {
-    "stevearc/dressing.nvim",
-    event = "VeryLazy",
-    opts = {
-      input = {
-        win_options = {
-          winblend = 0,
-        },
-      },
-      select = {
-        win_options = {
-          winblend = 0,
-        },
-        nui = {
-          win_options = {
-            winblend = 0,
-          },
-        },
-      },
-    },
-  },
 
   {
     'mbbill/undotree',
@@ -55,7 +34,6 @@ return { {
         lualine_x = { "filetype" },
         lualine_z = { "location" },
       },
-      extensions = { "nvim-tree" },
     },
   },
   { "HiPhish/nvim-ts-rainbow2" },

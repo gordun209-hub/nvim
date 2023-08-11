@@ -7,22 +7,16 @@ return { {
     'williamboman/mason-lspconfig.nvim',
     "hrsh7th/cmp-nvim-lsp",
 
-    -- Useful status updates for LSP
-
     -- Additional lua configuration, makes nvim stuff amazing!
-    'folke/neodev.nvim',
+        'folke/neodev.nvim',
   },
-
-
   config = function()
     local lspconfig = require('lspconfig')
     vim.diagnostic.config({
-      virtual_text = false,
-      virtual_lines = false, -- lsp_lines
-      update_in_insert = true,
+      virtual_text = true,
+      virtual_lines = true, -- lsp_lines
       underline = true,
       severity_sort = true,
-
       float = {
         focusable = false,
         style = 'minimal',
@@ -31,9 +25,9 @@ return { {
         prefix = '',
       },
     })
-
     vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded' })
     vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded' })
+
     local on_attach = function(client, bufnr)
       client.server_capabilities.semanticTokensProvider = nil
       vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { silent = true, desc = 'Show diagnostics' })

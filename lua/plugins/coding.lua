@@ -173,7 +173,6 @@ return {
         formatting = {
           format = function(entry, vim_item)
             -- Prepend with a fancy icon from config lua/rafi/config/init.lua
-            local icons = icons
             if entry.source.name == 'git' then
               vim_item.kind = icons.git
             else
