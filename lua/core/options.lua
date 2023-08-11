@@ -81,3 +81,5 @@ local fences = {
   'typescript',
 }
 vim.g.markdown_fenced_languages = fences
+
+

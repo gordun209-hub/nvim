@@ -36,3 +36,4 @@ require('lazy').setup('plugins', {
 require('core.maps')
 require('core.options')
 require('core.autocmds')
+

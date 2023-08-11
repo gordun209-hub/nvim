@@ -94,9 +94,7 @@ return {
         preselect = cmp.PreselectMode.None,
         sorting = defaults.sorting,
         experimental = {
-          ghost_text = {
-            hl_group = 'LspCodeLens',
-          },
+          ghost_text = false,
         },
         snippet = {
           expand = function(args)
@@ -232,4 +230,75 @@ return {
       require('Comment').setup()
     end,
   },
+  -- {
+  --   'github/copilot.vim',
+  --   event = 'VeryLazy',
+  --   config = function()
+  --     vim.cmd([[
+  -- 		let g:copilot_enable = 1
+  -- 		let g:copilot_filetypes = {
+  -- 				\ '*': v:true,
+  -- 				\ 'markdown':v:true,
+  -- 				\ 'yaml': v:true,
+  -- 				\ 'go': v:true,
+  -- 				\ 'lua': v:true,
+  -- 				\ 'gitcommit': v:true,
+  -- 				\ "TelescopePrompt": v:false,
+  -- 					\ }
+  --
+  -- 		imap <silent><script><expr> <C-e> copilot#Accept('\<CR>')
+  -- 				]])
+  --   end,
+  -- },
+  {
+    'zbirenbaum/copilot.lua',
+    cmd = 'Copilot',
+    event = 'InsertEnter',
+    config = function()
+      require('copilot').setup({
+        panel = {
+          enabled = true,
+          auto_refresh = false,
+          keymap = {
+            jump_prev = '[[',
+            jump_next = ']]',
+            accept = '<CR>',
+            refresh = 'gr',
+            open = '<M-CR>',
+          },
+          layout = {
+            position = 'bottom', -- | top | left | right
+            ratio = 0.4,
+          },
+        },
+        suggestion = {
+          enabled = true,
+          auto_trigger = false,
+          debounce = 75,
+          keymap = {
+            accept = '<C-c>',
+            next = '<M-]>',
+            prev = '<M-[>',
+            dismiss = '<C-]>',
+          },
+        },
+
+        filetypes = {
+          yaml = false,
+          markdown = false,
+          help = false,
+          gitcommit = false,
+          gitrebase = false,
+          hgcommit = false,
+          svn = false,
+          cvs = false,
+          ['.'] = false,
+        },
+        copilot_node_command = 'node', -- Node.js version must be > 16.x
+        server_opts_overrides = {},
+      })
+    end,
+  },
+
+  -- add a little bit of rust
 }
