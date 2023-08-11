@@ -1,9 +1,13 @@
-local function builtin() return require('telescope.builtin') end
+local function builtin()
+  return require('telescope.builtin')
+end
+local actions = require('telescope.actions')
 return {
   {
 
-    "nvim-telescope/telescope.nvim",
-    cmd = "Telescope",
+    'nvim-telescope/telescope.nvim',
+    cmd = 'Telescope',
+    tag = '0.1.2',
     dependencies = {
       'nvim-lua/plenary.nvim',
       {
@@ -12,31 +16,83 @@ return {
         --       refer to the README for telescope-fzf-native for more instructions.
         build = 'make',
         cond = function()
-          return vim.fn.executable 'make' == 1
+          return vim.fn.executable('make') == 1
         end,
       },
     },
     keys = {
 
-      { '<leader>fw', function() builtin().grep_string() end,    desc = "Word" },
-      { '<leader>ff', function() builtin().find_files() end,     desc = "Telescope Find Files" },
-      { '<leader>/',  function() builtin().live_grep() end,      desc = "Telescope Live Grep" },
-      { '<leader>fb', function() builtin().buffers() end,        desc = "Telescope Buffers" },
-      { '<leader>fh', function() builtin().help_tags() end,      desc = "Telescope Help Tags" },
-      { '<leader>fk', function() builtin().keymaps() end,        desc = "Telescope Show Keymaps" },
-      { '<leader>fr', function() builtin().lsp_references() end, desc = "Telescope Lsp References" },
+      {
+        '<leader>fw',
+        function()
+          builtin().grep_string()
+        end,
+        desc = 'Word',
+      },
+      {
+        '<leader>ff',
+        function()
+          builtin().find_files()
+        end,
+        desc = 'Telescope Find Files',
+      },
+      {
+        '<leader>/',
+        function()
+          builtin().live_grep()
+        end,
+        desc = 'Telescope Live Grep',
+      },
+      {
+        '<leader>fb',
+        function()
+          builtin().buffers()
+        end,
+        desc = 'Telescope Buffers',
+      },
+      {
+        '<leader>fh',
+        function()
+          builtin().help_tags()
+        end,
+        desc = 'Telescope Help Tags',
+      },
+      {
+        '<leader>fk',
+        function()
+          builtin().keymaps()
+        end,
+        desc = 'Telescope Show Keymaps',
+      },
+      {
+        '<leader>fr',
+        function()
+          builtin().lsp_references()
+        end,
+        desc = 'Telescope Lsp References',
+      },
     },
-    require('telescope').setup {
+    require('telescope').setup({
       defaults = {
+        vimgrep_arguments = {
+          'rg',
+          '--color=never',
+          '--no-heading',
+          '--with-filename',
+          '--line-number',
+          '--column',
+          '--smart-case',
+          '--trim', -- add this value
+        },
         mappings = {
           i = {
             ['<C-u>'] = false,
             ['<C-d>'] = false,
+            ['<esc>'] = actions.close,
           },
         },
       },
-    },
-
+    }),
   },
   {
     'christoomey/vim-tmux-navigator',
@@ -52,5 +108,4 @@ return {
       vim.g.tmux_navigator_no_mappings = true
     end,
   },
-
 }

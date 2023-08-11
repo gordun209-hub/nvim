@@ -1,9 +1,6 @@
-return { {
-  "nvim-tree/nvim-web-devicons",
-  opts = {},
-  lazy = true
-},
-  { "nvim-lua/plenary.nvim" },
+return {
+
+  { 'nvim-lua/plenary.nvim' },
 
   {
     'mbbill/undotree',
@@ -19,22 +16,25 @@ return { {
     opts = {},
   },
   {
-    "nvim-lualine/lualine.nvim",
+    'nvim-lualine/lualine.nvim',
+    dependencies = {
+      'kyazdani42/nvim-web-devicons',
+    },
+    event = 'VeryLazy',
     opts = {
       options = {
-        component_separators = "",
-        section_separators = "",
+        component_separators = '',
+        section_separators = '',
         icons_enabled = true,
-        globalstatus = true,
       },
       sections = {
-        lualine_a = { "mode" },
-        lualine_b = { "branch" },
-        lualine_c = { "filename" },
-        lualine_x = { "filetype" },
-        lualine_z = { "location" },
+        lualine_a = { 'mode' },
+        lualine_b = { 'branch' },
+        lualine_c = { 'filename' },
+        lualine_x = { 'filetype' },
+        lualine_z = { 'location' },
       },
     },
   },
-  { "HiPhish/nvim-ts-rainbow2" },
+  { 'HiPhish/nvim-ts-rainbow2' },
 }

@@ -78,7 +78,7 @@ return {
     },
     opts = function()
       local cmp = require('cmp')
-      local defaults = require("cmp.config.default")()
+      local defaults = require('cmp.config.default')()
       local luasnip = require('luasnip')
 
       local function has_words_before()
@@ -105,11 +105,11 @@ return {
         },
         sources = cmp.config.sources({
           { name = 'nvim_lsp', priority = 50 },
-          { name = 'path',     priority = 40 },
-          { name = 'luasnip',  priority = 30 },
+          { name = 'path', priority = 40 },
+          { name = 'luasnip', priority = 30 },
         }, {
           { name = 'buffer', priority = 50, keyword_length = 3 },
-          { name = 'emoji',  insert = true, priority = 20 },
+          { name = 'emoji', insert = true, priority = 20 },
           {
             name = 'tmux',
             priority = 10,
@@ -195,7 +195,7 @@ return {
     dependencies = { 'rafamadriz/friendly-snippets' },
     build = (not jit.os:find('Windows'))
         and "echo 'NOTE: jsregexp is optional, so not a big deal if it fails to build'; make install_jsregexp"
-        or nil,
+      or nil,
     -- stylua: ignore
     keys = {
       {
@@ -219,34 +219,17 @@ return {
       require('luasnip.loaders.from_vscode').lazy_load()
     end,
   },
+  -- auto pairs
   {
-    "windwp/nvim-autopairs",
-    event = "InsertEnter",
-    lazy = true,
-
-    config = function()
-      local npairs = require("nvim-autopairs")
-      npairs.setup({
-        check_ts = true,
-        fast_wrap = {
-          map = "<A-w>",
-          chars = { "{", "[", "(", '"', "'" },
-          pattern = [=[[%'%"%)%>%]%)%}%,]]=],
-          end_key = "-",
-          keys = "htnsdaoeuigcrlf',.pybmwvz;",
-          check_comma = true,
-          highlight = "Search",
-          highlight_grey = "Comment",
-        },
-        enable_check_bracket_line = false,
-      })
-      npairs.add_rules(require("nvim-autopairs.rules.endwise-lua"))
-    end,
+    'echasnovski/mini.pairs',
+    event = 'VeryLazy',
+    opts = {},
   },
   {
-    "numToStr/Comment.nvim",
+    'numToStr/Comment.nvim',
+    event = 'VeryLazy',
     config = function()
-      require("Comment").setup()
+      require('Comment').setup()
     end,
-  }
+  },
 }
