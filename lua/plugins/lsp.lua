@@ -1,3 +1,14 @@
+local lsp_formatting = function(bufnr)
+  vim.lsp.buf.format({
+    filter = function(client)
+      -- apply whatever logic you want (in this example, we'll only use null-ls)
+      return client.name == 'null-ls'
+    end,
+    bufnr = bufnr,
+  })
+end
+local augroup = vim.api.nvim_create_augroup('LspFormatting', {})
+
 return {
   {
     -- LSP Configuration & Plugins
@@ -43,12 +54,21 @@ return {
       vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded' })
 
       local on_attach = function(client, bufnr)
-        --if client == 'lua_ls' then
-        client.server_capabilities.documentFormattingProvider = false
-        client.server_capabilities.documentRangeFormattingProvider = false
-        --end
-
+        -- avoid conflict on formatting with lsp and null-ls
+        if client.supports_method('textDocument/formatting') then
+          vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+          vim.api.nvim_create_autocmd('BufWritePre', {
+            group = augroup,
+            buffer = bufnr,
+            callback = function()
+              lsp_formatting(bufnr)
+            end,
+          })
+        end
         client.server_capabilities.semanticTokensProvider = nil
+
+        -- use telescope for lsp
+
         vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { silent = true, desc = 'Show diagnostics' })
         vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { silent = true, desc = 'Show previous diagnostics' })
         vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { silent = true, desc = 'Show next diagnostics' })
@@ -62,13 +82,31 @@ return {
         vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { silent = true, desc = 'Rename symbol' })
         vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { silent = true, desc = 'Code actions' })
         vim.keymap.set('n', 'gr', vim.lsp.buf.references, { silent = true, desc = 'Show references' })
-        vim.keymap.set('n', '<leader>fa', function()
-          vim.lsp.buf.format({ async = true })
-        end, { silent = true, desc = 'Format buffer' })
+        -- use format function
+        vim.keymap.set('n', '<leader>fa', lsp_formatting, { silent = true, desc = 'Format buffer' })
+        --   vim.keymap.set('n', '<leader>fa', function()
+        --     vim.lsp.buf.format({ async = true })
+        --   end, { silent = true, desc = 'Format buffer' })
       end
+
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
       require('neodev').setup()
+      -- setup go
+      lspconfig['gopls'].setup({
+        capabilities = capabilities,
+        on_attach = on_attach,
+        cmd = { 'gopls', 'serve' },
+        settings = {
+          gopls = {
+            analyses = {
+              unusedparams = true,
+            },
+            staticcheck = true,
+          },
+        },
+      })
+
       lspconfig['lua_ls'].setup({
         capabilities = capabilities,
         on_attach = on_attach,
@@ -99,6 +137,7 @@ return {
     dependencies = {
       'ray-x/guihua.lua',
       'neovim/nvim-lspconfig',
+      'nvim-treesitter/nvim-treesitter',
     },
     config = function()
       require('go').setup({
@@ -110,27 +149,35 @@ return {
         },
         lsp_codelens = false,
         lsp_inlay_hints = {
-          enable = false,
+          enable = true,
         },
         lsp_keymaps = function(bufnr)
           local function buf_set_keymap(...)
             vim.api.nvim_buf_set_keymap(bufnr, ...)
           end
           local opts = { noremap = true, silent = true }
-
+          local format_sync_grp = vim.api.nvim_create_augroup('GoFormat', {})
+          vim.api.nvim_create_autocmd('BufWritePre', {
+            pattern = '*.go',
+            callback = function()
+              require('go.format').gofmt()
+            end,
+            group = format_sync_grp,
+          })
           buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
           buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
           buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
           buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
           buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
           buf_set_keymap('n', '<leader>rn', "<cmd>lua require('go.rename').lsprename()<CR>", opts)
+          -- format with <leader>fa
+          buf_set_keymap('n', '<leader>fa', "<cmd>lua require('go.format').gofmt()<CR>", opts)
         end,
         dap_debug = false,
       })
     end,
     ft = { 'go', 'gomod' },
     event = { 'CmdlineEnter' },
-    enabled = false,
     build = ':lua require("go.install").update_all_sync()',
   },
   {

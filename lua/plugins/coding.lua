@@ -223,33 +223,7 @@ return {
     event = 'VeryLazy',
     opts = {},
   },
-  {
-    'numToStr/Comment.nvim',
-    event = 'VeryLazy',
-    config = function()
-      require('Comment').setup()
-    end,
-  },
-  -- {
-  --   'github/copilot.vim',
-  --   event = 'VeryLazy',
-  --   config = function()
-  --     vim.cmd([[
-  -- 		let g:copilot_enable = 1
-  -- 		let g:copilot_filetypes = {
-  -- 				\ '*': v:true,
-  -- 				\ 'markdown':v:true,
-  -- 				\ 'yaml': v:true,
-  -- 				\ 'go': v:true,
-  -- 				\ 'lua': v:true,
-  -- 				\ 'gitcommit': v:true,
-  -- 				\ "TelescopePrompt": v:false,
-  -- 					\ }
-  --
-  -- 		imap <silent><script><expr> <C-e> copilot#Accept('\<CR>')
-  -- 				]])
-  --   end,
-  -- },
+  { 'echasnovski/mini.comment', version = false, event = 'VeryLazy', opts = {} },
   {
     'zbirenbaum/copilot.lua',
     cmd = 'Copilot',
@@ -294,6 +268,7 @@ return {
           cvs = false,
           ['.'] = false,
         },
+
         copilot_node_command = 'node', -- Node.js version must be > 16.x
         server_opts_overrides = {},
       })
