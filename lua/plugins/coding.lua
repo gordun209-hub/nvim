@@ -3,8 +3,7 @@ local icons = {
   diagnostics = {
     Error = '✘', --   ✘
     Warn = '󰀪', -- 󰀪 󰳤 󱦄 󱗓 
-    Info = 'ⁱ', --    ⁱ 󰋼 󰋽
-    Hint = '', --  󰌶 
+    Info = 'ⁱ', --    ⁱ 󰋼 󰋽 Hint = '', --  󰌶 
   },
   status = {
     git = {
@@ -73,6 +72,7 @@ return {
       'hrsh7th/cmp-buffer',
       'hrsh7th/cmp-path',
       'hrsh7th/cmp-emoji',
+      'zbirenbaum/copilot-cmp',
       { 'saadparwaiz1/cmp_luasnip', dependencies = 'L3MON4D3/LuaSnip' },
       'andersevenrud/cmp-tmux',
     },
@@ -94,23 +94,25 @@ return {
         preselect = cmp.PreselectMode.None,
         sorting = defaults.sorting,
         experimental = {
-          ghost_text = false,
+          ghost_text = { enabled = true },
         },
+
         snippet = {
           expand = function(args)
             require('luasnip').lsp_expand(args.body)
           end,
         },
         sources = cmp.config.sources({
-          { name = 'nvim_lsp', priority = 50 },
-          { name = 'path', priority = 40 },
-          { name = 'luasnip', priority = 30 },
+          { name = 'copilot' },
+          { name = 'nvim_lsp' },
+          { name = 'path' },
+          { name = 'luasnip' },
         }, {
-          { name = 'buffer', priority = 50, keyword_length = 3 },
-          { name = 'emoji', insert = true, priority = 20 },
+          { name = 'buffer', keyword_length = 3 },
+          { name = 'emoji', insert = true },
+
           {
             name = 'tmux',
-            priority = 10,
             keyword_length = 3,
             option = { all_panes = true, label = 'tmux' },
           },
@@ -231,7 +233,7 @@ return {
     config = function()
       require('copilot').setup({
         panel = {
-          enabled = true,
+          enabled = false,
           auto_refresh = false,
           keymap = {
             jump_prev = '[[',
@@ -257,21 +259,15 @@ return {
           },
         },
 
-        filetypes = {
-          yaml = false,
-          markdown = false,
-          help = false,
-          gitcommit = false,
-          gitrebase = false,
-          hgcommit = false,
-          svn = false,
-          cvs = false,
-          ['.'] = false,
-        },
-
         copilot_node_command = 'node', -- Node.js version must be > 16.x
-        server_opts_overrides = {},
       })
+    end,
+  },
+  {
+
+    'zbirenbaum/copilot-cmp',
+    config = function()
+      require('copilot_cmp').setup()
     end,
   },
 

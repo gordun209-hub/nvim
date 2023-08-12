@@ -10,10 +10,3 @@ vim.keymap.set('n', 'J', 'mzJ`z', silent)
 
 vim.keymap.set('n', 'n', 'nzzzv', silent)
 vim.keymap.set('n', 'N', 'Nzzzv', silent)
-
--- Save buffer
---vim.keymap.set('i', '<c-s>', '<esc><cmd>w<cr>a', silent)
---vim.keymap.set('n', '<leader>w', '<cmd>w<cr>', silent)
-
--- save with C-s
---vim.keymap.set('n', '<C-s>', '<cmd>w<cr>', silent)

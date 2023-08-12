@@ -74,6 +74,18 @@ return {
     },
     require('telescope').setup({
       defaults = {
+        -- ignore some files when grep
+        file_ignore_patterns = {
+          'node_modules',
+          'dist',
+          'build',
+          'target',
+          'LICENSE',
+          'vendor',
+          'Pods',
+          'Carthage',
+          '.*.png',
+        },
         vimgrep_arguments = {
           'rg',
           '--color=never',
@@ -84,6 +96,21 @@ return {
           '--smart-case',
           '--trim', -- add this value
         },
+
+        layout_strategy = 'flex',
+        layout_config = {
+          width = 0.95,
+          height = 0.85,
+          prompt_position = 'top',
+          horizontal = {
+            width = { padding = 0.15 },
+            preview_width = 0.6,
+          },
+          vertical = {
+            width = { padding = 0.3 },
+            preview_height = 0.75,
+          },
+        },
         mappings = {
           i = {
             ['<C-u>'] = false,
@@ -91,6 +118,8 @@ return {
             ['<esc>'] = actions.close,
           },
         },
+
+        file_sorter = require('telescope.sorters').get_fzy_sorter,
       },
     }),
   },
