@@ -48,6 +48,20 @@ return {
       })
     end,
   },
+  {
+    'echasnovski/mini.statusline',
+    version = false,
+    config = function()
+      require('mini.statusline').setup()
+    end,
+  },
+  {
+    'echasnovski/mini.starter',
+    version = false,
+    config = function()
+      require('mini.starter').setup()
+    end,
+  },
 
   {
     'mbbill/undotree',
@@ -63,4 +77,13 @@ return {
     opts = {},
   },
   { 'HiPhish/nvim-ts-rainbow2' },
+  {
+    'folke/which-key.nvim',
+    event = 'VeryLazy',
+    init = function()
+      vim.o.timeout = true
+      vim.o.timeoutlen = 300
+    end,
+    opts = {},
+  },
 }

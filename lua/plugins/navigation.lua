@@ -108,4 +108,11 @@ return {
       vim.g.tmux_navigator_no_mappings = true
     end,
   },
+
+  {
+    'is0n/fm-nvim',
+    config = function()
+      require('fm-nvim').setup({})
+    end,
+  },
 }
