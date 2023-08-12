@@ -131,7 +131,7 @@ return {
           ['<CR>'] = cmp.mapping({
             i = function(fallback)
               if cmp.visible() and cmp.get_active_entry() then
-                cmp.confirm({ select = false })
+                cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
               else
                 fallback()
               end
@@ -242,7 +242,6 @@ return {
       require('copilot').setup({
         panel = {
           enabled = false,
-
           keymap = {
             jump_prev = '[[',
             jump_next = ']]',
@@ -257,11 +256,11 @@ return {
         },
         suggestion = {
           enabled = true,
-          auto_trigger = true,
+          auto_trigger = false,
           debounce = 75,
           keymap = {
-            accept = '<Down>',
-            accept_line = '<Right>',
+            accept = '<M-j>',
+            accept_line = '<M-l>',
             next = '<M-]>',
             prev = '<M-[>',
             dismiss = '<C-]>',
@@ -275,19 +274,27 @@ return {
   {
 
     'zbirenbaum/copilot-cmp',
-    dependencies = { 'zbirenbaum/copilot.lua' },
     event = 'InsertEnter',
-    opts = {
-      panel = {
-        enabled = false,
-      },
-      filetypes = {
-        TelescopePrompt = false,
-        TelescopeResults = false,
-      },
-      suggestion = {
-        auto_trigger = false,
-      },
-    },
+    config = function()
+      require('copilot_cmp').setup()
+    end,
+  },
+  {
+    'Exafunction/codeium.vim',
+    config = function()
+      -- Change '<C-g>' here to any keycode you like.
+      vim.keymap.set('i', '<C-g>', function()
+        return vim.fn['codeium#Accept']()
+      end, { expr = true })
+      vim.keymap.set('i', '<c-;>', function()
+        return vim.fn['codeium#CycleCompletions'](1)
+      end, { expr = true })
+      vim.keymap.set('i', '<c-,>', function()
+        return vim.fn['codeium#CycleCompletions'](-1)
+      end, { expr = true })
+      vim.keymap.set('i', '<c-x>', function()
+        return vim.fn['codeium#Clear']()
+      end, { expr = true })
+    end,
   },
 }
