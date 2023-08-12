@@ -72,7 +72,6 @@ return {
       'hrsh7th/cmp-buffer',
       'hrsh7th/cmp-path',
       'hrsh7th/cmp-emoji',
-      'zbirenbaum/copilot-cmp',
       { 'saadparwaiz1/cmp_luasnip', dependencies = 'L3MON4D3/LuaSnip' },
       'andersevenrud/cmp-tmux',
     },
@@ -91,10 +90,19 @@ return {
       end
 
       return {
-        preselect = cmp.PreselectMode.None,
+        --preselect = cmp.PreselectMode.None,
         sorting = defaults.sorting,
         experimental = {
-          ghost_text = { enabled = true },
+          ghost_text = {
+            hl_group = 'LspCodeLens',
+          },
+        },
+        window = {
+          documentation = cmp.config.window.bordered(),
+        },
+        confirm_opts = {
+          behavior = cmp.ConfirmBehavior.Replace,
+          select = false,
         },
 
         snippet = {
@@ -234,7 +242,7 @@ return {
       require('copilot').setup({
         panel = {
           enabled = false,
-          auto_refresh = false,
+
           keymap = {
             jump_prev = '[[',
             jump_next = ']]',
@@ -249,10 +257,11 @@ return {
         },
         suggestion = {
           enabled = true,
-          auto_trigger = false,
+          auto_trigger = true,
           debounce = 75,
           keymap = {
-            accept = '<C-c>',
+            accept = '<Down>',
+            accept_line = '<Right>',
             next = '<M-]>',
             prev = '<M-[>',
             dismiss = '<C-]>',
@@ -266,10 +275,19 @@ return {
   {
 
     'zbirenbaum/copilot-cmp',
-    config = function()
-      require('copilot_cmp').setup()
-    end,
+    dependencies = { 'zbirenbaum/copilot.lua' },
+    event = 'InsertEnter',
+    opts = {
+      panel = {
+        enabled = false,
+      },
+      filetypes = {
+        TelescopePrompt = false,
+        TelescopeResults = false,
+      },
+      suggestion = {
+        auto_trigger = false,
+      },
+    },
   },
-
-  -- add a little bit of rust
 }

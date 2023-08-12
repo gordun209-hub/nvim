@@ -32,6 +32,7 @@ vim.o.cmdheight = 0
 vim.opt.cmdwinheight = 5
 vim.opt.equalalways = false
 vim.opt.display = 'lastline'
+opt.hidden = true
 vim.opt.pumblend = 10
 vim.opt.winblend = 10
 vim.g.markdown_recommended_style = 0
