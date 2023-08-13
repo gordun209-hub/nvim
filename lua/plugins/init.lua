@@ -50,16 +50,10 @@ return {
   },
   {
     'echasnovski/mini.statusline',
+    event = 'VeryLazy',
     version = false,
     config = function()
       require('mini.statusline').setup()
-    end,
-  },
-  {
-    'echasnovski/mini.starter',
-    version = false,
-    config = function()
-      require('mini.starter').setup()
     end,
   },
 
@@ -76,7 +70,7 @@ return {
     event = { 'BufRead Cargo.toml' },
     opts = {},
   },
-  { 'HiPhish/nvim-ts-rainbow2' },
+  { 'HiPhish/nvim-ts-rainbow2', event = 'VeryLazy' },
   {
     'folke/which-key.nvim',
     event = 'VeryLazy',
@@ -85,5 +79,18 @@ return {
       vim.o.timeoutlen = 300
     end,
     opts = {},
+  },
+
+  {
+    'karb94/neoscroll.nvim',
+    keys = { { '<c-u>' }, { 'zz' }, { '<c-d>' }, { '<c-e>' }, { '<c-y>' } },
+    opts = {},
+  },
+  -- Undo tree visualization
+  {
+    'mbbill/undotree',
+    keys = {
+      { '<leader>gu', '<cmd>UndotreeToggle<CR>', desc = 'Toggle undotree' },
+    },
   },
 }

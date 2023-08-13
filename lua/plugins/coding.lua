@@ -1,67 +1,4 @@
-local icons = {
-  git = ' ',
-  diagnostics = {
-    Error = '✘', --   ✘
-    Warn = '󰀪', -- 󰀪 󰳤 󱦄 󱗓 
-    Info = 'ⁱ', --    ⁱ 󰋼 󰋽 Hint = '', --  󰌶 
-  },
-  status = {
-    git = {
-      added = '₊', --  ₊
-      modified = '∗', --  ∗
-      removed = '₋', --  ₋
-    },
-    diagnostics = {
-      error = ' ',
-      warn = ' ',
-      info = ' ',
-      hint = '󰌶 ',
-    },
-    filename = {
-      modified = '+',
-      readonly = '🔒',
-      zoomed = '🔎',
-    },
-  },
-  -- Default completion kind symbols.
-  kinds = {
-    Array = '󰅪 ', --  󰅪 󰅨 󱃶
-    Boolean = '◩ ', --  ◩ 󰔡 󱃙 󰟡 󰨙
-    Class = '󰌗 ', --  󰌗 󰠱 𝓒
-    Color = '󰏘 ', -- 󰸌 󰏘
-    Constant = '󰏿 ', --   󰏿
-    Constructor = '󰆧 ', --  󰆧   
-    Copilot = ' ', -- 
-    Enum = '󰕘 ', --  󰕘  ℰ 
-    EnumMember = ' ', --  
-    Event = ' ', --  
-    Field = ' ', -- 󰄶  󰆨  󰀻 󰃒
-    File = ' ', --    󰈔 󰈙
-    Folder = ' ', --   󰉋
-    Function = '󰊕 ', --  󰊕 
-    Interface = ' ', --    
-    Key = ' ', -- 
-    Keyword = ' ', --   󰌋 
-    Method = '󰆧 ', --  󰆧 ƒ
-    Module = ' ', --   󰅩 󰆧 󰏗
-    Namespace = ' ', --   󰅩
-    Null = ' ', --  󰟢
-    Number = '󰎠 ', --  󰎠 
-    Object = ' ', --   󰅩
-    Operator = '󰃬 ', --  󰃬 󰆕 +
-    Package = ' ', --   󰏖 󰏗
-    Property = '󰖷 ', --  󰜢  
-    Reference = '󰈝 ', --  󰈝 󰈇
-    Snippet = ' ', --  󰘌 ⮡   
-    String = '󰅳 ', --  󰅳
-    Struct = ' ', --   𝓢 󰙅 󱏒
-    Text = ' ', --   󰉿 𝓐
-    TypeParameter = ' ', --  󰊄 𝙏
-    Unit = ' ', --   󰑭 
-    Value = ' ', --   󰀬 󰎠
-    Variable = ' ', --   󰀫 
-  },
-}
+local icons = require('icons')
 
 return {
   {
@@ -92,13 +29,19 @@ return {
       return {
         --preselect = cmp.PreselectMode.None,
         sorting = defaults.sorting,
+        view = {
+          entries = 'bordered',
+        },
         experimental = {
-          ghost_text = {
-            hl_group = 'LspCodeLens',
-          },
+          ghost_text = false,
         },
         window = {
-          documentation = cmp.config.window.bordered(),
+          completion = cmp.config.window.bordered({
+            winhighlight = 'Normal:Normal,FloatBorder:LspBorderBG,CursorLine:PmenuSel,Search:None',
+          }),
+          documentation = cmp.config.window.bordered({
+            winhighlight = 'Normal:Normal,FloatBorder:LspBorderBG,CursorLine:PmenuSel,Search:None',
+          }),
         },
         confirm_opts = {
           behavior = cmp.ConfirmBehavior.Replace,
@@ -111,19 +54,12 @@ return {
           end,
         },
         sources = cmp.config.sources({
-          { name = 'copilot' },
           { name = 'nvim_lsp' },
           { name = 'path' },
           { name = 'luasnip' },
-        }, {
           { name = 'buffer', keyword_length = 3 },
           { name = 'emoji', insert = true },
-
-          {
-            name = 'tmux',
-            keyword_length = 3,
-            option = { all_panes = true, label = 'tmux' },
-          },
+          { name = 'tmux', keyword_length = 3 },
         }),
         mapping = cmp.mapping.preset.insert({
           -- <CR> accepts currently selected item.
@@ -272,18 +208,13 @@ return {
     end,
   },
   {
-
-    'zbirenbaum/copilot-cmp',
-    event = 'InsertEnter',
-    config = function()
-      require('copilot_cmp').setup()
-    end,
-  },
-  {
     'Exafunction/codeium.vim',
+    event = 'InsertEnter',
+    dep = { 'hrsh7th/nvim-cmp' },
+
     config = function()
       -- Change '<C-g>' here to any keycode you like.
-      vim.keymap.set('i', '<C-g>', function()
+      vim.keymap.set('i', '<C-j>', function()
         return vim.fn['codeium#Accept']()
       end, { expr = true })
       vim.keymap.set('i', '<c-;>', function()
