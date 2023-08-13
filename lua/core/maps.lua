@@ -21,10 +21,11 @@ vim.keymap.set('n', '<leader>fq', '<cmd>Telescope quickfix<cr>', silent)
 vim.keymap.set('n', '<leader>fl', '<cmd>Telescope loclist<cr>', silent)
 vim.keymap.set('n', '<leader>fc', '<cmd>Telescope colorscheme<cr>', silent)
 vim.keymap.set('n', '<leader>fo', '<cmd>Telescope oldfiles<cr>', silent)
-vim.keymap.set('n', '<leader>fr', '<cmd>Telescope registers<cr>', silent)
+--vim.keymap.set('n', '<leader>fr', '<cmd>Telescope registers<cr>', silent)
 vim.keymap.set('n', '<leader>fv', '<cmd>Telescope vim_options<cr>', silent)
 vim.keymap.set('n', '<leader>fs', '<cmd>Telescope spell_suggest<cr>', silent)
 vim.keymap.set('n', '<leader>fm', '<cmd>Telescope man_pages<cr>', silent)
 vim.keymap.set('n', '<leader>ss', '<cmd>Telescope file_browser<cr>', silent)
+
 -- open LF with -
 vim.keymap.set('n', '-', '<cmd>Lf<cr>', silent)

@@ -81,11 +81,25 @@ return {
         vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { silent = true, desc = 'Rename symbol' })
         vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { silent = true, desc = 'Code actions' })
         vim.keymap.set('n', 'gr', vim.lsp.buf.references, { silent = true, desc = 'Show references' })
-        -- use format function
+        vim.keymap.set(
+          'n',
+          '<Leader>fd',
+          '<cmd>Telescope lsp_definitions<CR>',
+          { silent = true, desc = 'Goto definition' }
+        )
+        vim.keymap.set(
+          'n',
+          '<Leader>fi',
+          '<cmd>Telescope lsp_implementations<CR>',
+          { silent = true, desc = 'Goto implementation' }
+        )
+        vim.keymap.set(
+          'n',
+          '<Leader>fr',
+          '<cmd>Telescope lsp_references<CR>',
+          { silent = true, desc = 'Show references' }
+        )
         vim.keymap.set('n', '<leader>fa', lsp_formatting, { silent = true, desc = 'Format buffer' })
-        --   vim.keymap.set('n', '<leader>fa', function()
-        --     vim.lsp.buf.format({ async = true })
-        --   end, { silent = true, desc = 'Format buffer' })
       end
 
       local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -104,6 +118,12 @@ return {
             staticcheck = true,
           },
         },
+      })
+
+      -- setup latex
+      lspconfig['texlab'].setup({
+        capabilities = capabilities,
+        on_attach = on_attach,
       })
 
       lspconfig['lua_ls'].setup({
