@@ -65,7 +65,6 @@ return {
             end,
           })
         end
-        client.server_capabilities.semanticTokensProvider = nil
 
         -- use telescope for lsp
 
