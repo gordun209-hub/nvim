@@ -6,8 +6,28 @@ return {
     tag = '0.1.2',
     dependencies = {
       'nvim-lua/plenary.nvim',
+      {
+        'nvim-telescope/telescope-fzf-native.nvim',
+        build = 'make',
+      },
     },
     config = function()
+      local telescope = require('telescope')
+
+      local extensions = {
+        fzf = {
+          fuzzy = true, -- false will only do exact matching
+          override_generic_sorter = true, -- override the generic sorter
+          override_file_sorter = true, -- override the file sorter
+          case_mode = 'smart_case', -- or "ignore_case" or "respect_case"
+          -- the default case_mode is "smart_case"
+        },
+
+        -- bookmarks = {
+        --   url_open_command = "brave", -- change this with your preferred browser
+        -- },
+      }
+
       require('telescope').setup({
         defaults = {
           -- ignore some files when grep
@@ -33,11 +53,15 @@ return {
             '--trim', -- add this value
           },
 
-          layout_strategy = 'flex',
+          layout_strategy = 'horizontal',
+          sorting_strategy = 'ascending',
+
           layout_config = {
             width = 0.95,
             height = 0.85,
             prompt_position = 'top',
+            winblend = 0,
+
             horizontal = {
               width = { padding = 0.15 },
               preview_width = 0.6,
@@ -47,6 +71,7 @@ return {
               preview_height = 0.75,
             },
           },
+          extensions = extensions,
           mappings = {
             i = {
               ['<C-u>'] = false,
@@ -57,11 +82,35 @@ return {
           file_sorter = require('telescope.sorters').get_fzy_sorter,
         },
       })
+      telescope.load_extension('fzf')
+      telescope.load_extension('projects')
     end,
   },
   {
+    'jvgrootveld/telescope-zoxide', -- allows you operate zoxide within Neovim
+    lazy = true,
+    config = function()
+      local t = require('telescope')
+      t.load_extension('zoxide')
+    end,
+    keys = {
+      {
+        '\\cd',
+        function()
+          require('telescope').extensions.zoxide.list()
+        end,
+        desc = 'Zoxide list',
+      },
+    },
+    dependencies = {
+      'nvim-telescope/telescope.nvim',
+    },
+  },
+
+  {
     'nvim-telescope/telescope-file-browser.nvim',
     lazy = false,
+
     config = function()
       require('telescope').load_extension('file_browser')
     end,
@@ -83,12 +132,18 @@ return {
   },
 
   {
-    'is0n/fm-nvim',
-    event = 'VeryLazy',
-
-    config = function()
-      require('fm-nvim').setup({})
-    end,
+    'lmburns/lf.nvim',
+    cmd = 'Lf',
+    dependencies = { 'nvim-lua/plenary.nvim', 'akinsho/toggleterm.nvim' },
+    opts = {
+      winblend = 0,
+      highlights = { NormalFloat = { guibg = 'NONE' } },
+      border = 'single', -- border kind: single double shadow curved
+      escape_quit = true,
+    },
+    keys = {
+      { '-', '<cmd>Lf<cr>', desc = 'NeoTree' },
+    },
   },
   {
     'ibhagwan/fzf-lua',

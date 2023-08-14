@@ -13,7 +13,7 @@ vim.keymap.set('n', 'N', 'Nzzzv', silent)
 
 -- telescope mappings
 vim.keymap.set('n', '<leader>ff', '<cmd>Telescope find_files<cr>', silent)
-vim.keymap.set('n', '<leader>fg', '<cmd>Telescope live_grep<cr>', silent)
+vim.keymap.set('n', '<leader>fw', '<cmd>Telescope live_grep<cr>', silent)
 vim.keymap.set('n', '<leader>fb', '<cmd>Telescope buffers<cr>', silent)
 vim.keymap.set('n', '<leader>fh', '<cmd>Telescope help_tags<cr>', silent)
 vim.keymap.set('n', '<leader>ft', '<cmd>Telescope treesitter<cr>', silent)
@@ -29,3 +29,7 @@ vim.keymap.set('n', '<leader>ss', '<cmd>Telescope file_browser<cr>', silent)
 
 -- open LF with -
 vim.keymap.set('n', '-', '<cmd>Lf<cr>', silent)
+
+-- Using ufo provider need remap `zR` and `zM`. If Neovim is 0.6.1, remap yourself
+vim.keymap.set('n', 'zR', require('ufo').openAllFolds)
+vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)

@@ -6,54 +6,24 @@ return {
     version = false,
     config = function()
       require('mini.basics').setup({
-        -- Options. Set to `false` to disable.
         options = {
-          -- Basic options ('termguicolors', 'number', 'ignorecase', and many more)
           basic = true,
-
-          -- Extra UI features ('winblend', 'cmdheight=0', ...)
           extra_ui = true,
-
-          -- Presets for window borders ('single', 'double', ...)
           win_borders = 'double',
         },
-
-        -- Mappings. Set to `false` to disable.
         mappings = {
-          -- Basic mappings (better 'jk', save with Ctrl+S, ...)
           basic = true,
-
-          -- Prefix for mappings that toggle common options ('wrap', 'spell', ...).
-          -- Supply empty string to not create these mappings.
-          option_toggle_prefix = [[\]],
-
-          -- Window navigation with <C-hjkl>, resize with <C-arrow>
           windows = true,
-
-          -- Move cursor in Insert, Command, and Terminal mode with <M-hjkl>
           move_with_alt = false,
         },
 
         -- Autocommands. Set to `false` to disable
         autocommands = {
-          -- Basic autocommands (highlight on yank, start Insert in terminal, ...)
           basic = true,
-
-          -- Set 'relativenumber' only in linewise and blockwise Visual mode
           relnum_in_visual_mode = false,
         },
-
-        -- Whether to disable showing non-error feedback
         silent = false,
       })
-    end,
-  },
-  {
-    'echasnovski/mini.statusline',
-    event = 'VeryLazy',
-    version = false,
-    config = function()
-      require('mini.statusline').setup()
     end,
   },
 
@@ -61,23 +31,13 @@ return {
     'mbbill/undotree',
     cmd = 'UndotreeToggle',
     keys = {
-      { '<Leader>gu', '<cmd>UndotreeToggle<CR>', desc = 'Undo Tree' },
+      { '<Leader>u', '<cmd>UndotreeToggle<CR>', desc = 'Undo Tree' },
     },
   },
 
   {
     'saecki/crates.nvim',
     event = { 'BufRead Cargo.toml' },
-    opts = {},
-  },
-  { 'HiPhish/nvim-ts-rainbow2', event = 'VeryLazy' },
-  {
-    'folke/which-key.nvim',
-    event = 'VeryLazy',
-    init = function()
-      vim.o.timeout = true
-      vim.o.timeoutlen = 300
-    end,
     opts = {},
   },
 
@@ -96,8 +56,12 @@ return {
   {
     'lervag/vimtex',
     lazy = false,
+    ft = { 'tex', 'markdown' },
     config = function()
+      vim.cmd([[filetype plugin indent on]])
       vim.g.vimtex_view_method = 'zathura'
+      vim.g.vimtex_syntaxs_enabled = 0
+      vim.opt.conceallevel = 2
       vim.g.vimtex_quickfix_mode = 0
       vim.g.vimtex_compiler_latexmk = {
         options = {
@@ -109,5 +73,84 @@ return {
         },
       }
     end,
+  },
+
+  -- highlights
+  {
+    'RRethy/vim-illuminate',
+    config = function()
+      require('illuminate').configure({
+        providers = {
+          'lsp',
+          'treesitter',
+        },
+        delay = 100,
+        under_cursor = true,
+        min_count_to_highlight = 2,
+      })
+    end,
+  },
+  {
+    'ahmedkhalf/project.nvim',
+    event = 'VeryLazy',
+    keys = {
+      {
+        '<leader>pj',
+        function()
+          require('telescope').extensions.projects.projects()
+        end,
+        { desc = 'Browse projects' },
+      },
+    },
+
+    config = function()
+      require('project_nvim').setup({
+        -- Manual mode doesn't automatically change your root directory, so you have
+        -- the option to manually do so using `:ProjectRoot` command.
+        manual_mode = false,
+
+        -- Methods of detecting the root directory. **"lsp"** uses the native neovim
+        -- lsp, while **"pattern"** uses vim-rooter like glob pattern matching. Here
+        -- order matters: if one is not detected, the other is used as fallback. You
+        -- can also delete or rearangne the detection methods.
+        detection_methods = { 'pattern', 'lsp' },
+
+        -- All the patterns used to detect root dir, when **"pattern"** is in
+        -- detection_methods
+        patterns = { '.git', '.vscode', '.svn', 'Makefile', 'package.json' },
+
+        -- Table of lsp clients to ignore by name
+        -- eg: { "efm", ... }
+        ignore_lsp = {},
+
+        -- Don't calculate root dir on specific directories
+        -- Ex: { "~/.cargo/*", ... }
+        exclude_dirs = {},
+
+        -- Show hidden files in telescope
+        show_hidden = false,
+
+        -- When set to false, you will get a message when project.nvim changes your
+        -- directory.
+        silent_chdir = true,
+
+        -- What scope to change the directory, valid options are
+        -- * global (default)
+        -- * tab
+        -- * win
+        scope_chdir = 'global',
+
+        -- Path where project.nvim will store the project history for use in
+        -- telescope
+        datapath = vim.fn.stdpath('data'),
+      })
+    end,
+  },
+  {
+    'iamcco/markdown-preview.nvim',
+    build = function()
+      vim.fn['mkdp#util#install']()
+    end,
+    ft = 'markdown',
   },
 }

@@ -125,6 +125,10 @@ return {
         capabilities = capabilities,
         on_attach = on_attach,
       })
+      lspconfig['ltex'].setup({
+        capabilities = capabilities,
+        on_attach = on_attach,
+      })
 
       lspconfig['lua_ls'].setup({
         capabilities = capabilities,
@@ -149,6 +153,8 @@ return {
           },
         },
       })
+
+      --require('ufo').setup()
     end,
   },
   {
@@ -219,6 +225,9 @@ return {
           null_ls.builtins.formatting.gofumpt,
           null_ls.builtins.code_actions.shellcheck,
           null_ls.builtins.formatting.stylua,
+          null_ls.builtins.formatting.latexindent.with({
+            extra_args = { '-g', '/dev/null' }, -- https://github.com/cmhughes/latexindent.pl/releases/tag/V3.9.3
+          }),
           -- for python
           null_ls.builtins.formatting.black,
           null_ls.builtins.formatting.isort,
