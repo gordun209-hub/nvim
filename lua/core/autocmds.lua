@@ -27,6 +27,7 @@ vim.api.nvim_create_autocmd({ 'FileType' }, {
     'help',
     'lspinfo',
     'man',
+    'UndoTree',
     'neotest-output',
     'neotest-output-panel',
     'neotest-summary',

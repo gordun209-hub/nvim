@@ -3,7 +3,6 @@ return {
     'nvim-treesitter/nvim-treesitter',
     dependencies = {
       'nvim-treesitter/nvim-treesitter-textobjects',
-      'kevinhwang91/nvim-ufo',
     },
     build = ':TSUpdate',
     config = function()
@@ -21,11 +20,6 @@ return {
         highlight = { enable = true, additional_vim_regex_highlighting = false },
         indent = { enable = true },
         rainbow = { enable = true },
-        require('ufo').setup({
-          provider_selector = function(bufnr, filetype, buftype)
-            return { 'treesitter', 'indent' }
-          end,
-        }),
       })
     end,
   },

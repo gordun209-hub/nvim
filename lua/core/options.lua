@@ -3,10 +3,6 @@ vim.g.maplocalleader = '\\'
 
 local opt = vim.opt
 local g = vim.g
-vim.o.foldcolumn = '1' -- '0' is not bad
-vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
-vim.o.foldlevelstart = 99
-vim.o.foldenable = true
 opt.clipboard = 'unnamedplus' -- Sync with system clipboard
 opt.expandtab = true -- Use spaces instead of tabs
 opt.grepprg = 'rg --vimgrep'
@@ -25,6 +21,7 @@ opt.wildmenu = true
 opt.wildmode = 'longest:full,full' -- Command-line completion mode
 opt.winminwidth = 5 -- Minimum window width
 opt.redrawtime = 101
+opt.laststatus = 0
 opt.cursorline = false
 opt.shortmess:append('Ic')
 opt.relativenumber = true
@@ -61,6 +58,7 @@ local fences = {
 }
 vim.g.markdown_fenced_languages = fences
 
+-- italic comments
 vim.cmd([[highlight Comment cterm=italic term=italic gui=italic]])
 vim.cmd([[highlight htmlArg cterm=italic term=italic gui=italic]])
 vim.cmd([[highlight xmlAttrib cterm=italic term=italic gui=italic]])
