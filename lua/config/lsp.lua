@@ -46,7 +46,6 @@ vim.diagnostic.config({
 	update_in_insert = false,
 	severity_sort = true,
 })
-
 -- Enable inlay hints
 vim.lsp.inlay_hint.enable(false)
 
