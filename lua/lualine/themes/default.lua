@@ -9,6 +9,7 @@ local colors = {
 	gray = "#2c2e33",
 }
 
+
 return {
 	normal = {
 		a = { fg = colors.bg, bg = colors.blue },
