@@ -6,12 +6,6 @@ return {
         local fzf = require("fzf-lua")
 
         fzf.setup({
-            -- "telescope",
-            -- keymap = {
-            -- 	fzf = {
-            -- 		["ctrl-q"] = "select-all+accept",
-            -- 	},
-            -- },
             winopts = {
                 height = 0.85,
                 width = 0.80,
@@ -37,35 +31,35 @@ return {
                 ["--bind"] = "ctrl-j:down,ctrl-k:up",
             },
             -- Global actions - applies to all pickers
-            -- actions = {
-            -- 	files = {
-            -- 		["default"] = fzf.actions.file_edit,
-            -- 		["ctrl-s"] = fzf.actions.file_split,
-            -- 		["ctrl-v"] = fzf.actions.file_vsplit,
-            -- 		["ctrl-t"] = fzf.actions.file_tabedit,
-            -- 		["ctrl-q"] = fzf.actions.file_sel_to_qf,
-            -- 		["alt-q"] = fzf.actions.file_sel_to_ll,
-            -- 	},
-            -- },
-            -- files = {
-            -- 	prompt = "Files❯ ",
-            -- 	multiprocess = true,
-            -- 	git_icons = true,
-            -- 	file_icons = true,
-            -- 	color_icons = true,
-            -- 	fd_opts = "--color=never --type f --hidden --follow --exclude .git",
-            -- 	rg_opts = "--color=never --files --hidden --follow -g '!.git'",
-            -- 	cwd_prompt = false,
-            -- },
-            -- grep = {
-            -- 	prompt = "Rg❯ ",
-            -- 	input_prompt = "Grep For❯ ",
-            -- 	multiprocess = true,
-            -- 	git_icons = true,
-            -- 	file_icons = true,
-            -- 	color_icons = true,
-            -- 	rg_opts = "--column --line-number --no-heading --color=always --smart-case --max-columns=4096 -e",
-            -- },
+            actions = {
+                files = {
+                    ["default"] = fzf.actions.file_edit,
+                    ["ctrl-s"] = fzf.actions.file_split,
+                    ["ctrl-v"] = fzf.actions.file_vsplit,
+                    ["ctrl-t"] = fzf.actions.file_tabedit,
+                    ["ctrl-q"] = fzf.actions.file_sel_to_qf,
+                    ["alt-q"] = fzf.actions.file_sel_to_ll,
+                },
+            },
+            files = {
+                prompt = "Files❯ ",
+                multiprocess = true,
+                git_icons = true,
+                file_icons = true,
+                color_icons = true,
+                fd_opts = "--color=never --type f --hidden --follow --exclude .git",
+                rg_opts = "--color=never --files --hidden --follow -g '!.git'",
+                cwd_prompt = false,
+            },
+            grep = {
+                prompt = "Rg❯ ",
+                input_prompt = "Grep For❯ ",
+                multiprocess = true,
+                git_icons = true,
+                file_icons = true,
+                color_icons = true,
+                rg_opts = "--column --line-number --no-heading --color=always --smart-case --max-columns=4096 -e",
+            },
         })
 
         local keymap = vim.keymap.set

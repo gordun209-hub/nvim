@@ -11,6 +11,7 @@ vim.lsp.enable({
 	"basedpyright",
 	"bashls",
 	"css_variables",
+    "clangd",
 	"cssmodules_ls",
 	"dockerls",
 	"grammarly",

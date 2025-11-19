@@ -26,7 +26,7 @@ return {
 
                 -- Go
                 go = { "gofmt", "goimports" },
-                c = {"clang-format" },
+                c = { "clang-format" },
 
                 -- Rust
                 rust = { "rustfmt" },
