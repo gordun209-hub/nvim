@@ -39,18 +39,18 @@ autocmd("BufReadPost", {
 })
 
 -- Create directories when saving a file if they don't exist
-autocmd("BufWritePre", {
-    group = general,
-    pattern = "*",
-    callback = function(event)
-        if event.match:match("^%w%w+://") then
-            return
-        end
-        local file = vim.loop.fs_realpath(event.match) or event.match
-        vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
-    end,
-    desc = "Auto-create directories",
-})
+-- autocmd("BufWritePre", {
+--     group = general,
+--     pattern = "*",
+--     callback = function(event)
+--         if event.match:match("^%w%w+://") then
+--             return
+--         end
+--         local file = vim.loop.fs_realpath(event.match) or event.match
+--         vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
+--     end,
+--     desc = "Auto-create directories",
+-- })
 
 autocmd({ "BufWinEnter" }, {
     callback = function()
@@ -83,11 +83,11 @@ autocmd({ "FileType" }, {
     end,
 })
 
-autocmd({ "CmdWinEnter" }, {
-    callback = function()
-        vim.cmd("quit")
-    end,
-})
+-- autocmd({ "CmdWinEnter" }, {
+--     callback = function()
+--         vim.cmd("quit")
+--     end,
+-- })
 
 autocmd({ "VimResized" }, {
     callback = function()
@@ -95,12 +95,12 @@ autocmd({ "VimResized" }, {
     end,
 })
 
-autocmd({ "BufWinEnter" }, {
-    pattern = { "*" },
-    callback = function()
-        vim.cmd("checktime")
-    end,
-})
+-- autocmd({ "BufWinEnter" }, {
+--     pattern = { "*" },
+--     callback = function()
+--         vim.cmd("checktime")
+--     end,
+-- })
 
 autocmd({ "BufWinEnter" }, {
     pattern = { "*" },
