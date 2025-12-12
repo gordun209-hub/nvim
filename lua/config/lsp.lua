@@ -17,10 +17,13 @@ vim.lsp.enable({
     "grammarly",
     "jsonls",
     "lemminx",
+    "scheme_langserver",
     "marksman",
     "nginx_language_server",
     "taplo",
     "yamlls",
+    "racket_langserver",
+    --   "clojure-lsp"
 })
 
 -- Configure diagnostic display with custom signs

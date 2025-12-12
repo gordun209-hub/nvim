@@ -1,165 +1,100 @@
 return {
-    {
-        "saghen/blink.cmp",
-        dependencies = {
-            "rafamadriz/friendly-snippets",
-            "onsails/lspkind.nvim",
+    "saghen/blink.cmp",
+    lazy = false, -- lazy loading handled internally
+    dependencies = {
+        "rafamadriz/friendly-snippets",
+        "mikavilpas/blink-ripgrep.nvim",
+    },
 
+    version = "v0.*",
+    opts = {
+        -- 'default' for mappings similar to built-in completion
+        -- 'super-tab' for mappings similar to vscode (tab to accept, arrow keys to navigate)
+        -- 'enter' for mappings similar to 'super-tab' but with 'enter' to accept
+        keymap = {
+            preset = "default",
+            ["<C-k>"] = { "select_prev", "fallback" },
+            ["<C-space>"] = {
+                function(cmp)
+                    cmp.show({ providers = { "snippets" } })
+                end,
+            },
+            ["<C-j>"] = { "select_next", "fallback" },
+            ["<Tab>"] = {"accept"},
         },
 
-        version = "1.*",
-        config = function()
-            -- setup() is also available as an alias
-            require("lspkind").init({
-                -- DEPRECATED (use mode instead): enables text annotations
-                --
-                -- default: true
-                -- with_text = true,
+        appearance = {
+            use_nvim_cmp_as_default = true,
+            nerd_font_variant = "mono",
+            kind_icons = {
+                Text = "󰉿",
+                Method = "󰊕",
+                Function = "󰊕",
+                Constructor = "󰒓",
 
-                -- defines how annotations are shown
-                -- default: symbol
-                -- options: 'text', 'text_symbol', 'symbol_text', 'symbol'
-                mode = "symbol_text",
+                Field = "󰜢",
+                Variable = "󰆦",
+                Property = "󰖷",
 
-                -- default symbol map
-                -- can be either 'default' (requires nerd-fonts font) or
-                -- 'codicons' for codicon preset (requires vscode-codicons font)
-                --
-                -- default: 'default'
-                -- preset = "codicons",
+                Class = "󱡠",
+                Interface = "󱡠",
+                Struct = "󱡠",
+                Module = "󰅩",
 
-                -- override preset symbols
-                --
-                -- default: {}
-                symbol_map = {
-                    Array = " ",
-                    Boolean = " ",
-                    Class = " ",
-                    Color = " ",
-                    Constant = " ",
-                    Constructor = " ",
-                    Enum = " ",
-                    EnumMember = " ",
-                    Event = " ",
-                    Field = " ",
-                    File = " ",
-                    Folder = "󰉋 ",
-                    Function = " ",
-                    Interface = " ",
-                    Key = " ",
-                    Keyword = " ",
-                    Method = " ",
-                    -- Module = " ",
-                    Module = " ",
-                    Namespace = " ",
-                    Null = "󰟢",
-                    Number = " ",
-                    Object = " ",
-                    Operator = " ",
-                    Package = " ",
-                    Property = " ",
-                    Reference = " ",
-                    Snippet = " ",
-                    String = " ",
-                    Struct = " ",
-                    Text = " ",
-                    TypeParameter = " ",
-                    Unit = " ",
-                    Value = " ",
-                    Variable = " ",
-                    Codeium = "󰚩 ",
-                    LazyDev = "b ",
-                },
-            })
+                Unit = "󰪚",
+                Value = "󰦨",
+                Enum = "󰦨",
+                EnumMember = "󰦨",
 
-            local opts = {
-                cmdline = {
-                    keymap = {
-                        preset = "inherit",
-                        ["<C-j>"] = { "select_next", "fallback" },
-                        ["<C-k>"] = { "select_prev", "fallback" },
+                Keyword = "󰻾",
+                Constant = "󰏿",
+
+                Snippet = "󱄽",
+                Color = "󰏘",
+                File = "󰈔",
+                Reference = "󰬲",
+                Folder = "󰉋",
+                Event = "󱐋",
+                Operator = "󰪚",
+                TypeParameter = "󰬛",
+            },
+        },
+        completion = {
+            menu = {
+                border = "single",
+                -- highlight = 'VertSplit',
+                draw = {
+                    -- columns = { { 'item_idx' }, { 'kind_icon' }, { 'label', 'label_description', gap = 1 } },
+                    -- components = {
+                    --   item_idx = {
+                    --     text = function(ctx) return ctx.idx == 10 and '0' or ctx.idx >= 10 and ' ' or tostring(ctx.idx) end,
+                    --     highlight = 'Constant' -- optional, only if you want to change its color
+                    --   }
+                    -- }
+                    columns = { { "kind_icon" }, { "label", gap = 1 } },
+                    components = {
+                        label = {},
                     },
                 },
-
-                keymap = {
-                    ["<C-space>"] = {
-                        function(cmp)
-                            cmp.show({ providers = { "snippets" } })
-                        end,
-                    },
-                    ["<Tab>"] = { "select_next", "fallback" },
-
-                    --preset = "default",
-                    ["<C-k>"] = { "select_prev", "fallback" },
-                    ["<C-j>"] = { "select_next", "fallback" },
-                    --     ["<CR>"] = { "select_and_accept", "fallback" },
-                    -- },
-                    menu = {
-                        draw = {
-                            columns = {
-                                { "label", "label_description", gap = 1 },
-                                { "kind_icon", "kind" },
-                            },
-                        },
-                    },
+            },
+            documentation = {
+                window = {
+                    border = "single",
                 },
-
-                fuzzy = {
-                    implementation = "prefer_rust_with_warning",
-                    -- implementation = "lua",
-                },
-
-                completion = {
-                    menu = {
-                        draw = {
-                            components = {
-                                kind_icon = {
-                                    text = function(item)
-                                        local kind = require("lspkind").symbol_map[item.kind] or ""
-                                        return kind .. ""
-                                    end,
-                                    -- highlight = "CmpItemKind",
-                                },
-                                -- label = {
-                                -- 	text = function(item)
-                                -- 		return item.label
-                                -- 	end,
-                                -- 	highlight = "CmpItemAbbr",
-                                -- },
-                                -- kind = {
-                                -- 	text = function(item)
-                                -- 		return item.kind
-                                -- 	end,
-                                -- 	highlight = "CmpItemKind",
-                                -- },
-                            },
-                        },
-                    },
-
-                    documentation = { auto_show = true },
-                },
-                sources = {
-                    -- default = { "codeium", "lazydev", "lsp", "path", "buffer" },
-                    default = {  "lazydev", "lsp", "path", "buffer" },
-                    providers = {
-                        lazydev = {
-                            name = "LazyDev",
-                            module = "lazydev.integrations.blink",
-                            score_offset = 100,
-                            transform_items = function(_, items)
-                                local CompletionItemKind = require("blink.cmp.types").CompletionItemKind
-                                local kind_idx = #CompletionItemKind + 1
-                                CompletionItemKind[kind_idx] = "LazyDev"
-                                for _, item in ipairs(items) do
-                                    item.kind = kind_idx
-                                end
-                                return items
-                            end,
-                        },
-                    },
-                },
-            }
-            require("blink.cmp").setup(opts)
-        end,
+            },
+        },
+        signature = { window = { border = "single" } },
+        cmdline = { enabled = true },
+        sources = {
+            per_filetype = {
+                codecompanion = { "codecompanion" },
+            },
+            default = { "snippets", "lsp", "path", "buffer" },
+            providers = {},
+        },
+    },
+    opts_extend = {
+        "sources.default",
+        "sources.providers",
     },
 }
