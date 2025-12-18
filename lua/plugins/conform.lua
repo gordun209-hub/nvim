@@ -12,34 +12,24 @@ return {
                 javascriptreact = { "prettier" },
                 typescriptreact = { "prettier" },
                 css = { "prettier" },
-
                 html = { "prettier" },
                 json = { "prettier" },
-                yaml = { "prettier" },
-                markdown = { "prettier" },
-                graphql = { "prettier" },
                 -- Lua
                 lua = { "stylua" },
-
-                -- Python
-                python = { "isort", "black" },
-
                 -- Go
                 go = { "gofmt", "goimports" },
                 c = { "clang-format" },
-
                 -- Rust
                 rust = { "rustfmt" },
-
                 -- Shell
                 sh = { "shfmt" },
                 bash = { "shfmt" },
                 zsh = { "shfmt" },
-
                 -- TOML
                 toml = { "taplo" },
-
-                -- Use the "*" filetype to run formatters on all filetypes
+                -- SICP
+                racket = { "raco_fmt" },
+                scheme = { "raco_fmt" },
                 ["*"] = { "trim_whitespace" },
             },
             -- Set default options
@@ -47,13 +37,13 @@ return {
                 lsp_format = "fallback",
             },
             -- Set up format-on-save
-            -- format_on_save = {
-            -- 	-- These options will be passed to conform.format()
-            -- 	timeout_ms = 500,
-            -- 	lsp_format = "fallback",
-            -- },
             -- Customize formatters
             formatters = {
+                raco_fmt = {
+                    command = "raco",
+                    args = { "fmt", "-i", "$FILENAME" },
+                    stdin = false,
+                },
                 shfmt = {
                     prepend_args = { "-i", "2" }, -- 2 spaces indentation
                 },

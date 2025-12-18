@@ -34,26 +34,18 @@ keymap("v", ">", ">gv", opts)
 keymap("x", "p", [["_dP]])
 keymap("n", "x", '"_x')
 
-vim.cmd([[:amenu 10.100 mousemenu.Goto\ Definition <cmd>lua vim.lsp.buf.definition()<CR>]])
-vim.cmd([[:amenu 10.110 mousemenu.References <cmd>lua vim.lsp.buf.references()<CR>]])
--- vim.cmd [[:amenu 10.120 mousemenu.-sep- *]]
 
-vim.keymap.set("n", "<RightMouse>", "<cmd>:popup mousemenu<CR>")
-vim.keymap.set("n", "<Tab>", "<cmd>:popup mousemenu<CR>")
 
 -- more good
 -- keymap({ "n", "o", "x" }, "<s-h>", "^", opts)
 -- keymap({ "n", "o", "x" }, "<s-l>", "g_", opts)
 
--- tailwind bearable to work with
-keymap({ "n", "x" }, "j", "gj", opts)
-keymap({ "n", "x" }, "k", "gk", opts)
--- keymap("n", "<leader>w", ":lua vim.wo.wrap = not vim.wo.wrap<CR>", opts)
 
--- Tab navigation
-keymap("n", "<s-tab>", "<cmd>tabnew %<cr>", opts)
-keymap({ "n" }, "<s-h>", "<cmd>tabp<cr>", opts)
-keymap({ "n" }, "<s-l>", "<cmd>tabn<cr>", opts)
+-- Move selected lines down with Shift+J
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
+
+-- Move selected lines up with Shift+K
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
 
 vim.keymap.set({ "n", "i" }, "<C-s>", function()
     vim.cmd("w")
